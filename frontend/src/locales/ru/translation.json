@@ -1,0 +1,20 @@
+{
+  "Logout": "Выход",
+  "Settings": "Настройки",
+  "Language": "Язык",
+  "English": "Английский",
+  "Russian": "Русский",
+  "Theme": "Тема",
+  "Autodetect": "Автовыбор",
+  "Light": "Светлая",
+  "Dark": "Тёмная",
+  "Stub admin menu item": "Пункт-заглушка для админского меню",
+  "App ready to work offline": "Приложение готово к работе оффлайн",
+  "Application is updating": "Приложение обновляется",
+  "Update": "Обновить",
+  "New version available, click update button to update app": "Доступна новая версия, нажмите кнопку Обновить чтобы обновить приложение",
+  "Cancel": "Отмена",
+  "Close": "Закрыть",
+  "Confirm": "Подтвердить",
+  "Page not found": "Страница не найдена"
+}
