@@ -2,7 +2,7 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
-  "author": "Alexey Butkeev",
+  "author": "Alexey Butkeev, Egor Filin",
   "type": "module",
   "scripts": {
     "dev": "vite",
