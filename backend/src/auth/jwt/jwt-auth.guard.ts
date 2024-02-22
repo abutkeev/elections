@@ -21,6 +21,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
 
+      if (context.getType<string>() === 'telegraf') {
+        return true;
+      }
+
       const canActivate = await super.canActivate(context);
 
       if (typeof canActivate === 'boolean') return canActivate;
