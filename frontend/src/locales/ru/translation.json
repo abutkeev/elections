@@ -16,5 +16,9 @@
   "Cancel": "Отмена",
   "Close": "Закрыть",
   "Confirm": "Подтвердить",
+  "Reload page": "Перезагрузить страницу",
+  "An error occurred": "Произошла ошибка",
+  "Login.title": "Вход",
+  "Login with telegram": "Войти через телеграм",
   "Page not found": "Страница не найдена"
 }

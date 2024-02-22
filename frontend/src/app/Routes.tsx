@@ -4,6 +4,7 @@ import { useAppSelector } from '@/store';
 import useAuthData from '@/hooks/useAuthData';
 import Main from './Main';
 import NotFound from '@/pages/NotFound';
+import LoginPage from '@/pages/LoginPage';
 
 const userRoutes: RouteObject[] = [
   {
@@ -15,7 +16,7 @@ const userRoutes: RouteObject[] = [
 const unauthorizedRoutes: RouteObject[] = [
   {
     path: '*',
-    element: <NotFound />,
+    element: <LoginPage />,
   },
 ];
 

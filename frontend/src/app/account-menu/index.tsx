@@ -17,12 +17,12 @@ export interface AccountMenuDialogItemProps extends AccountMenuItemProps {
 
 const AccountMenu: React.FC = () => {
   const [menuAhchor, setMenuAnchor] = useState<HTMLElement>();
-  const { login } = useAuthData() || {};
+  const { id } = useAuthData() || {};
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
 
   const closeMenu = () => setMenuAnchor(undefined);
 
-  if (!login) {
+  if (!id) {
     return (
       <>
         <IconButton color='inherit' onClick={() => setShowSettingsDialog(true)}>
