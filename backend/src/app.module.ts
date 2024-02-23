@@ -5,6 +5,7 @@ import { DB_URI, TELEGRAM_BOT_TOKEN } from './constants';
 import { TgBotModule } from './tg-bot/tg-bot.module';
 import { ChatsModule } from './chats/chats.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ElectionsModule } from './elections/elections.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     TgBotModule,
     ChatsModule,
+    ElectionsModule,
   ],
 })
 export class AppModule {}
