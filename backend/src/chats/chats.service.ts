@@ -30,9 +30,17 @@ export class ChatsService {
     const result: ChatDto[] = [];
 
     for (const { id, title } of chats) {
-      const { status } = await this.bot.telegram.getChatMember(id, userId);
-      if (status === 'creator' || status === 'administrator') {
-        result.push({ id, title });
+      try {
+        const { status } = await this.bot.telegram.getChatMember(id, userId);
+        if (status === 'creator' || status === 'administrator') {
+          result.push({ id, title });
+        }
+      } catch (e) {
+        if (e instanceof Error && e.message === '400: Bad Request: group chat was upgraded to a supergroup chat') {
+          this.chatsModel.deleteOne({ id }).exec();
+          continue;
+        }
+        throw e;
       }
     }
 
