@@ -25,22 +25,36 @@ export class ChatsService {
     await this.chatsModel.updateOne({ id: data.id }, { $set: data }, { upsert: true });
   }
 
+  async getUserStatus(userId: number, chatId: number): Promise<'member' | 'admin' | undefined> {
+    try {
+      const { status } = await this.bot.telegram.getChatMember(chatId, userId);
+      switch (status) {
+        case 'creator':
+        case 'administrator':
+          return 'admin';
+        case 'kicked':
+        case 'left':
+          return;
+        default:
+          return 'member';
+      }
+    } catch (e) {
+      if (e instanceof Error && e.message === '400: Bad Request: group chat was upgraded to a supergroup chat') {
+        this.chatsModel.deleteOne({ id: chatId }).exec();
+        return;
+      }
+      return;
+    }
+  }
+
   async getAdminChats(userId: number) {
     const chats = await this.chatsModel.find({ status: { $not: { $in: ['left', 'kicked'] } } });
     const result: ChatDto[] = [];
 
     for (const { id, title } of chats) {
-      try {
-        const { status } = await this.bot.telegram.getChatMember(id, userId);
-        if (status === 'creator' || status === 'administrator') {
-          result.push({ id, title });
-        }
-      } catch (e) {
-        if (e instanceof Error && e.message === '400: Bad Request: group chat was upgraded to a supergroup chat') {
-          this.chatsModel.deleteOne({ id }).exec();
-          continue;
-        }
-        throw e;
+      const status = await this.getUserStatus(userId, id);
+      if (status === 'admin') {
+        result.push({ id, title });
       }
     }
 
