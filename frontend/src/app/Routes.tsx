@@ -5,8 +5,13 @@ import useAuthData from '@/hooks/useAuthData';
 import Main from './Main';
 import NotFound from '@/pages/NotFound';
 import LoginPage from '@/pages/LoginPage';
+import MainPage from '@/pages/main-page';
 
 const userRoutes: RouteObject[] = [
+  {
+    path: '/',
+    element: <MainPage />,
+  },
   {
     path: '*',
     element: <NotFound />,

@@ -21,7 +21,7 @@ function CustomComboBox<T>({ options, label, value, setValue, sx, required = tru
     [autoCompleteOptions, value]
   );
   const [inputValue, setInputValue] = useState('');
-  
+
   useEffect(() => {
     if (inputValue && !value && !autoCompleteOptions.find(({ label }) => inputValue === label)) return;
     setInputValue((autoCompleteValue && autoCompleteValue.label) || `${value || ''}`);
