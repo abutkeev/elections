@@ -6,6 +6,7 @@ import { JWT_SECRET } from 'src/constants';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import { AdminAuthGuard } from './jwt/admin-auth.guard';
+import { JwtStrategy } from './jwt/jwt.strategy';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AdminAuthGuard } from './jwt/admin-auth.guard';
   ],
   providers: [
     AuthService,
+    JwtStrategy,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
