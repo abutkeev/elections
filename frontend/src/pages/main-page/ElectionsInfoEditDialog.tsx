@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { ElectionsDto, NewElectionsDto, useChatsGetQuery, useElectionsGetQuery } from '@/api/api';
 import CustomDialog from '@/components/common/CustomDialog';
 import { Stack, TextField } from '@mui/material';
@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import CustomComboBox from '@/components/common/CustomComboBox';
 import CustomDateTimePicker from '@/components/common/CustomDateTimePicker';
 import dayjs, { Dayjs } from 'dayjs';
-import useUpdatingState from '@/hooks/useUpdatingState';
 
 interface ElectionsInfoEditDialogProps {
   item?: ElectionsDto;
@@ -26,10 +25,10 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
   onSave,
 }) => {
   const { t } = useTranslation();
-  const [title, setTitle] = useUpdatingState(item?.title || '');
-  const [chat, setChat] = useUpdatingState<number | undefined>(item?.chat_id);
-  const [start, setStart] = useUpdatingState<Dayjs | null>(item?.end ? dayjs(item.start) : null);
-  const [end, setEnd] = useUpdatingState<Dayjs | null>(item?.end ? dayjs(item.end) : null);
+  const [title, setTitle] = useState(item?.title || '');
+  const [chat, setChat] = useState<number | undefined>(item?.chat_id);
+  const [start, setStart] = useState<Dayjs | null>(item?.end ? dayjs(item.start) : null);
+  const [end, setEnd] = useState<Dayjs | null>(item?.end ? dayjs(item.end) : null);
   const { data: chats = [] } = useChatsGetQuery();
   const { isFetching } = useElectionsGetQuery();
 
