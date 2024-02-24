@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Chat } from './schemas/chat.schema';
@@ -45,6 +45,14 @@ export class ChatsService {
       }
       return;
     }
+  }
+
+  async getChat(id: number) {
+    const chat = await this.chatsModel.findOne({ id });
+    if (!chat) {
+      throw new NotFoundException(`chat ${id} not found`);
+    }
+    return chat.toJSON();
   }
 
   async getAdminChats(userId: number) {
