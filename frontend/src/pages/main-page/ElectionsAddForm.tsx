@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useChatsGetQuery, useElectionsAddMutation } from '@/api/api';
+import { useChatsGetQuery, useElectionsAddMutation, useElectionsGetQuery } from '@/api/api';
 import CustomDialog from '@/components/common/CustomDialog';
 import { Add } from '@mui/icons-material';
 import { Box, Fab, Stack, TextField, useTheme } from '@mui/material';
@@ -14,6 +14,7 @@ const ElectionsAddForm: FC = () => {
   const [chat, setChat] = useState<number>();
   const { data: chats = [] } = useChatsGetQuery();
   const [add] = useElectionsAddMutation();
+  const { isFetching } = useElectionsGetQuery();
 
   const handleDialogClose = () => {
     setShowAddDialog(false);
@@ -24,7 +25,6 @@ const ElectionsAddForm: FC = () => {
   const handleAdd = async () => {
     if (!chat || !title) return;
     await add({ newElectionsDto: { chat, title } });
-    handleDialogClose();
   };
 
   const valid = !!title && !!chat;
@@ -65,7 +65,7 @@ const ElectionsAddForm: FC = () => {
         onCancel={handleDialogClose}
         onConfirm={handleAdd}
         confirmButtonText={t('Add')}
-        confirmButtonProps={{ disabled: !valid }}
+        confirmButtonProps={{ disabled: !valid, refreshing: isFetching, finalAction: handleDialogClose }}
       />
     </>
   );
