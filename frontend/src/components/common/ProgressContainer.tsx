@@ -23,7 +23,10 @@ const ProgressContainer: FC<PropsWithChildren<ProgressContainerProps>> = ({
   const { sx: boxSx } = boxProps || {};
 
   return (
-    <Box {...boxProps} sx={[...(Array.isArray(boxSx) ? boxSx : [boxSx]), { position: 'relative' }]}>
+    <Box
+      {...boxProps}
+      sx={[...(Array.isArray(boxSx) ? boxSx : [boxSx]), { position: 'relative', display: 'inline-block' }]}
+    >
       {inProgress && (
         <CircularProgress
           {...progressProps}
