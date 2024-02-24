@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChatsService } from 'src/chats/chats.service';
 import { Elections } from './schemas/elections.schema';
@@ -38,12 +38,31 @@ export class ElectionsService {
     return result;
   }
 
-  async add(userId: number, { chat, title }: NewElectionsDto) {
+  private get_time(data: NewElectionsDto): { start?: Date; end?: Date } {
+    try {
+      const start = data.start && new Date(data.start);
+      const end = data.end && new Date(data.end);
+      if (start && end && end <= start) {
+        throw new BadRequestException('start time must be greater than end time');
+      }
+      return { start, end };
+    } catch (e) {
+      if (e instanceof BadRequestException) {
+        throw e;
+      }
+      this.logger.error(e);
+      return {};
+    }
+  }
+
+  async add(userId: number, data: NewElectionsDto) {
+    const { chat, title } = data;
     const status = await this.chatsService.getUserStatus(userId, chat);
     if (status !== 'admin') {
       throw new ForbiddenException(`invalid user status ${status}`);
     }
-    await this.electionsModel.create({ chat, title });
+    const { start, end } = this.get_time(data);
+    await this.electionsModel.create({ chat, title, start, end });
     return true;
   }
 }

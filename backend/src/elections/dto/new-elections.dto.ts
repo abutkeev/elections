@@ -6,4 +6,10 @@ export class NewElectionsDto {
 
   @ApiProperty({ required: true })
   title: string;
+
+  @ApiProperty({ required: false })
+  start?: string;
+
+  @ApiProperty({ required: false })
+  end?: string;
 }
