@@ -5,6 +5,8 @@ import { Add } from '@mui/icons-material';
 import { Box, Fab, Stack, TextField, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import CustomComboBox from '@/components/common/CustomComboBox';
+import CustomDateTimePicker from '@/components/common/CustomDateTimePicker';
+import { Dayjs } from 'dayjs';
 
 const ElectionsAddForm: FC = () => {
   const { spacing } = useTheme();
@@ -12,6 +14,8 @@ const ElectionsAddForm: FC = () => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [title, setTitle] = useState('');
   const [chat, setChat] = useState<number>();
+  const [start, setStart] = useState<Dayjs | null>(null);
+  const [end, setEnd] = useState<Dayjs | null>(null);
   const { data: chats = [] } = useChatsGetQuery();
   const [add] = useElectionsAddMutation();
   const { isFetching } = useElectionsGetQuery();
@@ -20,14 +24,25 @@ const ElectionsAddForm: FC = () => {
     setShowAddDialog(false);
     setTitle('');
     setChat(undefined);
+    setStart(null);
+    setEnd(null);
   };
 
   const handleAdd = async () => {
     if (!chat || !title) return;
-    await add({ newElectionsDto: { chat, title } });
+    await add({
+      newElectionsDto: {
+        chat,
+        title,
+        start: start?.toISOString(),
+        end: end?.toISOString(),
+      },
+    });
   };
 
-  const valid = !!title && !!chat;
+  const valid = !!title && !!chat && !(start && end && start >= end);
+
+  const minEnd = start?.add(1);
 
   if (chats.length === 0) return;
 
@@ -59,6 +74,14 @@ const ElectionsAddForm: FC = () => {
               label={t('Chat')}
               value={chat}
               setValue={setChat}
+            />
+            <CustomDateTimePicker label={t('Voting start time')} value={start} onChange={setStart} disablePast />
+            <CustomDateTimePicker
+              label={t('Voting end time')}
+              value={end}
+              onChange={setEnd}
+              disablePast
+              minDateTime={minEnd}
             />
           </Stack>
         }
