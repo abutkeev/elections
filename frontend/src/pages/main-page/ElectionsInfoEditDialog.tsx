@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { ElectionsDto, NewElectionsDto, useChatsGetQuery, useElectionsGetQuery } from '@/api/api';
 import CustomDialog from '@/components/common/CustomDialog';
 import { Stack, TextField } from '@mui/material';
@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import CustomComboBox from '@/components/common/CustomComboBox';
 import CustomDateTimePicker from '@/components/common/CustomDateTimePicker';
 import dayjs, { Dayjs } from 'dayjs';
+import useUpdatingState from '@/hooks/useUpdatingState';
 
 interface ElectionsInfoEditDialogProps {
   item?: ElectionsDto;
@@ -25,19 +26,25 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
   onSave,
 }) => {
   const { t } = useTranslation();
-  const [title, setTitle] = useState(item?.title || '');
-  const [chat, setChat] = useState<number | undefined>(item?.chat_id);
-  const [start, setStart] = useState<Dayjs | null>(item?.end ? dayjs(item.start) : null);
-  const [end, setEnd] = useState<Dayjs | null>(item?.end ? dayjs(item.end) : null);
+  const defaultTitle = item?.title || '';
+  const defaultChat = item?.chat_id;
+  const defaultStart = useMemo(() => (item?.start ? dayjs(item.start) : null), [item?.start]);
+  const defaultEnd = useMemo(() => (item?.end ? dayjs(item.end) : null), [item?.end]);
+  const [title, setTitle] = useUpdatingState(defaultTitle);
+  const [chat, setChat] = useUpdatingState<number | undefined>(defaultChat);
+  const [start, setStart] = useUpdatingState<Dayjs | null>(defaultStart);
+  const [end, setEnd] = useUpdatingState<Dayjs | null>(defaultEnd);
   const { data: chats = [] } = useChatsGetQuery();
   const { isFetching } = useElectionsGetQuery();
 
   const handleDialogClose = () => {
     onClose();
-    setTitle('');
-    setChat(undefined);
-    setStart(null);
-    setEnd(null);
+    setTimeout(() => {
+      setTitle(defaultTitle);
+      setChat(defaultChat);
+      setStart(defaultStart);
+      setEnd(defaultEnd);
+    }, 1000);
   };
 
   const handleAdd = async () => {
