@@ -19,7 +19,7 @@ export class ElectionsController {
   }
 
   @Put(':id')
-  put(@Request() { user }, @Param('id') id: string, @Body() data: NewElectionsDto) {
+  edit(@Request() { user }, @Param('id') id: string, @Body() data: NewElectionsDto) {
     return this.service.edit(user.id, id, data);
   }
 }
