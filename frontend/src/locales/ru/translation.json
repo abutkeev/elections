@@ -13,6 +13,7 @@
   "Application is updating": "Приложение обновляется",
   "Update": "Обновить",
   "New version available, click update button to update app": "Доступна новая версия, нажмите кнопку Обновить чтобы обновить приложение",
+  "Clear": "Очистить",
   "Cancel": "Отмена",
   "Close": "Закрыть",
   "Confirm": "Подтвердить",
@@ -23,9 +24,9 @@
   "New elections": "Новые выборы",
   "Title": "Название",
   "Chat": "Чат",
-  "Add": "Добавить",
   "Voting start time": "Время начала голосования",
   "Voting end time": "Время окончания голосования",
+  "Add": "Добавить",
   "Elections": "Выборы",
   "Page not found": "Страница не найдена",
   "not set": "не установлено"
