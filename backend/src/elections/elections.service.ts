@@ -1,15 +1,25 @@
-import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChatsService } from 'src/chats/chats.service';
 import { Elections } from './schemas/elections.schema';
 import { Model } from 'mongoose';
 import { NewElectionsDto } from './dto/new-elections.dto';
 import { ElectionsDto } from './dto/elections.dto';
+import { NominationDto } from './dto/nomination.dto';
+import { CandidatesService } from 'src/candidates/candidates.service';
 
 @Injectable()
 export class ElectionsService {
   constructor(
     @InjectModel(Elections.name) private electionsModel: Model<Elections>,
+    private candidatesService: CandidatesService,
     private chatsService: ChatsService
   ) {}
 
@@ -76,5 +86,27 @@ export class ElectionsService {
     const { start, end } = this.get_time(data);
     await this.electionsModel.updateOne({ _id: electionsId }, { chat, title, start, end });
     return true;
+  }
+
+  async nominate(userId: number, electionsId: string, data: NominationDto) {
+    const elections = await this.electionsModel.findOne({ _id: electionsId }).exec();
+
+    if (!elections) {
+      throw new NotFoundException(`elections ${electionsId} not found`);
+    }
+
+    const { chat, start } = elections;
+
+    if (start && start < new Date()) {
+      throw new NotAcceptableException('elections is already started');
+    }
+
+    const status = await this.chatsService.getUserStatus(userId, chat);
+
+    if (!status) {
+      throw new NotAcceptableException('user not in chat');
+    }
+
+    await this.candidatesService.nominate(userId, electionsId, data);
   }
 }

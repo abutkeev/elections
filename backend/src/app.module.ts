@@ -6,6 +6,7 @@ import { TgBotModule } from './tg-bot/tg-bot.module';
 import { ChatsModule } from './chats/chats.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ElectionsModule } from './elections/elections.module';
+import { CandidatesModule } from './candidates/candidates.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ElectionsModule } from './elections/elections.module';
     TgBotModule,
     ChatsModule,
     ElectionsModule,
+    CandidatesModule,
   ],
 })
 export class AppModule {}
