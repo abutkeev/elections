@@ -65,4 +65,15 @@ export class ElectionsService {
     await this.electionsModel.create({ chat, title, start, end });
     return true;
   }
+
+  async edit(userId: number, electionsId: string, data: NewElectionsDto) {
+    const { chat, title } = data;
+    const status = await this.chatsService.getUserStatus(userId, chat);
+    if (status !== 'admin') {
+      throw new ForbiddenException(`invalid user status ${status}`);
+    }
+    const { start, end } = this.get_time(data);
+    await this.electionsModel.updateOne({ _id: electionsId }, { chat, title, start, end });
+    return true;
+  }
 }

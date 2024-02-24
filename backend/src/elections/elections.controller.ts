@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Request } from '@nestjs/common';
 import { ElectionsService } from './elections.service';
 import { NewElectionsDto } from './dto/new-elections.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -16,5 +16,10 @@ export class ElectionsController {
   @Post()
   add(@Request() { user }, @Body() data: NewElectionsDto) {
     return this.service.add(user.id, data);
+  }
+
+  @Put(':id')
+  put(@Request() { user }, @Param('id') id: string, @Body() data: NewElectionsDto) {
+    return this.service.edit(user.id, id, data);
   }
 }
