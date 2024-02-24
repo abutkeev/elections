@@ -16,6 +16,7 @@ const CustomDateTimePicker: FC<DateTimePickerProps<Dayjs>> = props => {
           actionBar: { actions: ['accept', 'cancel', 'clear'], ...props.slotProps?.actionBar },
         }}
         localeText={{ clearButtonLabel: t('Clear'), cancelButtonLabel: t('Cancel'), ...props.localeText }}
+        views={props.views || ['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
         {...props}
       />
     </LocalizationProvider>
