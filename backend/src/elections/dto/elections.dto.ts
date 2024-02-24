@@ -5,6 +5,9 @@ export class ElectionsDto {
   id: string;
 
   @ApiProperty({ required: true })
+  chat_id: number;
+
+  @ApiProperty({ required: true })
   chat_title: string;
 
   @ApiProperty({ required: true })

@@ -26,6 +26,7 @@ export class ElectionsService {
         result.push({
           id,
           title,
+          chat_id: chat,
           chat_title: (await chatInfo).title,
           start: start?.toISOString(),
           end: end?.toISOString(),
