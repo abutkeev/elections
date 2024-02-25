@@ -20,7 +20,7 @@ interface NominationFormProps {
 const NominationForm: FC<NominationFormProps> = ({ electionsId, candidates }) => {
   const { t } = useTranslation();
   const auth = useAuthData();
-  const nomination = useMemo(() => candidates.find(({ user_id }) => user_id === auth?.id), [candidates]);
+  const nomination = useMemo(() => candidates.find(({ user_id }) => user_id === auth?.id), [candidates, auth?.id]);
   const nominated = !!nomination;
   const [showForm, setShowForm] = useUpdatingState(nominated);
   const [name, setName] = useUpdatingState(nomination?.name || auth?.name || '');
