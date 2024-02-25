@@ -19,6 +19,9 @@ export class CandidatesService {
 
   async find(elections_id: string): Promise<CandidateDto[]> {
     const candidates = await this.model.find({ elections_id });
+
+    if (!candidates) return [];
+    
     return candidates.map(({ user_id, name, program }) => ({ user_id, name, program }));
   }
 }
