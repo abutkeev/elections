@@ -5,12 +5,12 @@ import useAuthData from '@/hooks/useAuthData';
 import Main from './Main';
 import NotFound from '@/pages/NotFound';
 import LoginPage from '@/pages/LoginPage';
-import MainPage from '@/pages/main-page';
+import ElectionsPage from '@/pages/elections';
 
 const userRoutes: RouteObject[] = [
   {
     path: '/',
-    element: <MainPage />,
+    element: <ElectionsPage />,
   },
   {
     path: '*',

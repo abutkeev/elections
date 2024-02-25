@@ -7,13 +7,13 @@ import { Button, Divider, Stack, TextField } from '@mui/material';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface NominationProps {
+interface NominationFormProps {
   electionsId: string;
   defaultName?: string;
   defaultProgram?: string;
 }
 
-const Nomination: FC<NominationProps> = ({ electionsId, defaultName, defaultProgram }) => {
+const NominationForm: FC<NominationFormProps> = ({ electionsId, defaultName, defaultProgram }) => {
   const { t } = useTranslation();
   const auth = useAuthData();
   const nominated = defaultName !== undefined;
@@ -72,4 +72,4 @@ const Nomination: FC<NominationProps> = ({ electionsId, defaultName, defaultProg
   );
 };
 
-export default Nomination;
+export default NominationForm;

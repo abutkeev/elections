@@ -1,12 +1,12 @@
 import useTitle from '@/hooks/useTitle';
 import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import ElectionsAddForm from './ElectionsAddForm';
+import ElectionsAddForm from './manage/ElectionsAddForm';
 import { useElectionsGetQuery } from '@/api/api';
 import LoadingWrapper from '@/components/common/LoadingWrapper';
 import ElectionsEntry from './ElectionsEntry';
 
-const MainPage: FC = () => {
+const ElectionsPage: FC = () => {
   const { t } = useTranslation();
   useTitle(t('Elections'));
   const { data = [], isLoading, isError } = useElectionsGetQuery();
@@ -41,4 +41,4 @@ const MainPage: FC = () => {
   );
 };
 
-export default MainPage;
+export default ElectionsPage;

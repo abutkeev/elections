@@ -4,9 +4,9 @@ import formatIsoTimeString from '@/utils/formatIsoTimeString';
 import { Box, Divider, IconButton, Paper, Stack } from '@mui/material';
 import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ElectionsInfoEditDialog from './ElectionsInfoEditDialog';
+import ElectionsInfoEditDialog from './manage/ElectionsInfoEditDialog';
 import { Edit } from '@mui/icons-material';
-import Nomination from './Nomination';
+import NominationForm from './nomination/NominationForm';
 import useAuthData from '@/hooks/useAuthData';
 
 interface ElectionsEntryProps {
@@ -38,7 +38,7 @@ const ElectionsEntry: FC<ElectionsEntryProps> = ({ entry }) => {
         <LabledText label={t('Voting start time')} labelSuffix=':' text={formatIsoTimeString(start)} />
         <LabledText label={t('Voting end time')} labelSuffix=':' text={formatIsoTimeString(end)} />
         {(!start || new Date(start) > new Date()) && (
-          <Nomination electionsId={id} defaultName={nomination?.name} defaultProgram={nomination?.program} />
+          <NominationForm electionsId={id} defaultName={nomination?.name} defaultProgram={nomination?.program} />
         )}
       </Paper>
       <ElectionsInfoEditDialog
