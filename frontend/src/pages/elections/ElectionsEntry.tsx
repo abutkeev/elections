@@ -6,7 +6,7 @@ import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ElectionsInfoEditDialog from './manage/ElectionsInfoEditDialog';
 import { Edit } from '@mui/icons-material';
-import NominationForm from './nomination/NominationForm';
+import ElectionsDetails from './ElectionsDetails';
 
 interface ElectionsEntryProps {
   entry: ElectionsDto;
@@ -33,7 +33,7 @@ const ElectionsEntry: FC<ElectionsEntryProps> = ({ entry }) => {
         <Divider />
         <LabledText label={t('Voting start time')} labelSuffix=':' text={formatIsoTimeString(start)} />
         <LabledText label={t('Voting end time')} labelSuffix=':' text={formatIsoTimeString(end)} />
-        {(!start || new Date(start) > new Date()) && <NominationForm electionsId={id} candidates={candidates} />}
+        <ElectionsDetails id={id} start={start} end={end} candidates={candidates} />
       </Paper>
       <ElectionsInfoEditDialog
         item={entry}
