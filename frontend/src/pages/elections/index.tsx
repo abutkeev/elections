@@ -14,6 +14,15 @@ const ElectionsPage: FC = () => {
   const elections = useMemo(
     () =>
       data.slice().sort((a, b) => {
+        // move current elections to the first place
+        if (a.start && a.end && new Date(a.start) < new Date() && new Date(a.end) > new Date()) {
+          return -1;
+        }
+
+        if (b.start && b.end && new Date(b.start) < new Date() && new Date(b.end) > new Date()) {
+          return 1;
+        }
+
         if (a.start === b.start) {
           return 0;
         }
