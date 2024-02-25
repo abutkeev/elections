@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CandidateDto } from './candidate.dto';
 
 export class ElectionsDto {
   @ApiProperty({ required: true })
@@ -21,4 +22,7 @@ export class ElectionsDto {
 
   @ApiProperty({ required: true })
   can_edit: boolean;
+
+  @ApiProperty({ required: true })
+  candidates: CandidateDto[];
 }
