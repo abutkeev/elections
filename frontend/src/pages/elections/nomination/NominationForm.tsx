@@ -1,25 +1,30 @@
-import { useElectionsGetQuery, useElectionsNominateMutation, useElectionsWithdrawMutation } from '@/api/api';
+import {
+  ElectionsDto,
+  useElectionsGetQuery,
+  useElectionsNominateMutation,
+  useElectionsWithdrawMutation,
+} from '@/api/api';
 import LabledText from '@/components/common/LabledText';
 import ProgressButton from '@/components/common/ProgressButton';
 import useAuthData from '@/hooks/useAuthData';
 import useUpdatingState from '@/hooks/useUpdatingState';
 import { Button, Divider, Stack, TextField } from '@mui/material';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface NominationFormProps {
   electionsId: string;
-  defaultName?: string;
-  defaultProgram?: string;
+  candidates: ElectionsDto['candidates'];
 }
 
-const NominationForm: FC<NominationFormProps> = ({ electionsId, defaultName, defaultProgram }) => {
+const NominationForm: FC<NominationFormProps> = ({ electionsId, candidates }) => {
   const { t } = useTranslation();
   const auth = useAuthData();
-  const nominated = defaultName !== undefined;
+  const nomination = useMemo(() => candidates.find(({ user_id }) => user_id === auth?.id), [candidates]);
+  const nominated = !!nomination;
   const [showForm, setShowForm] = useUpdatingState(nominated);
-  const [name, setName] = useUpdatingState(defaultName || auth?.name || '');
-  const [program, setProgram] = useUpdatingState(defaultProgram || '');
+  const [name, setName] = useUpdatingState(nomination?.name || auth?.name || '');
+  const [program, setProgram] = useUpdatingState(nomination?.program || '');
   const { isFetching } = useElectionsGetQuery();
   const [nominate] = useElectionsNominateMutation();
   const [withdraw] = useElectionsWithdrawMutation();
