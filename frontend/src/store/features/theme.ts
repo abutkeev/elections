@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 const localStorageThemeModeName = 'theme';
 
 const initialState = {
-  mode: localStorage.getItem(localStorageThemeModeName),
+  mode: localStorage.getItem(localStorageThemeModeName) || 'auto',
 };
 
 const themeSlice = createSlice({
