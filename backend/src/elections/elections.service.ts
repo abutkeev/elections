@@ -90,7 +90,7 @@ export class ElectionsService {
     return true;
   }
 
-  async nominate(userId: number, electionsId: string, data: NominationDto) {
+  private async check_can_nominate(userId: number, electionsId: string) {
     const elections = await this.electionsModel.findOne({ _id: electionsId }).exec();
 
     if (!elections) {
@@ -108,7 +108,10 @@ export class ElectionsService {
     if (!status) {
       throw new NotAcceptableException('user not in chat');
     }
+  }
 
+  async nominate(userId: number, electionsId: string, data: NominationDto) {
+    await this.check_can_nominate(userId, electionsId);
     await this.candidatesService.nominate(userId, electionsId, data);
   }
 }
