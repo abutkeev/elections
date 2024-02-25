@@ -114,4 +114,9 @@ export class ElectionsService {
     await this.check_can_nominate(userId, electionsId);
     await this.candidatesService.nominate(userId, electionsId, data);
   }
+
+  async withdraw(userId: number, electionsId: string) {
+    await this.check_can_nominate(userId, electionsId);
+    await this.candidatesService.withdraw(userId, electionsId);
+  }
 }

@@ -13,6 +13,10 @@ export class CandidatesService {
     await this.model.replaceOne({ user_id, elections_id }, { user_id, elections_id, name, program }, { upsert: true });
   }
 
+  async withdraw(user_id: number, elections_id: string) {
+    await this.model.deleteOne({ user_id, elections_id });
+  }
+
   async find(elections_id: string): Promise<CandidateDto[]> {
     const candidates = await this.model.find({ elections_id });
     return candidates.map(({ user_id, name, program }) => ({ user_id, name, program }));
