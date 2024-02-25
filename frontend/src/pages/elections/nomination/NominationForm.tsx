@@ -58,6 +58,7 @@ const NominationForm: FC<NominationFormProps> = ({ electionsId, candidates }) =>
           fullWidth
           multiline
           minRows={4}
+          maxRows={6}
           label={t('Program')}
           value={program}
           onChange={({ target: { value } }) => setProgram(value)}
