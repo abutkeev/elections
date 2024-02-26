@@ -80,14 +80,8 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
             value={chat}
             setValue={setChat}
           />
-          <CustomDateTimePicker label={t('Voting start time')} value={start} onChange={setStart} disablePast />
-          <CustomDateTimePicker
-            label={t('Voting end time')}
-            value={end}
-            onChange={setEnd}
-            disablePast
-            minDateTime={minEnd}
-          />
+          <CustomDateTimePicker label={t('Voting start time')} value={start} onChange={setStart} />
+          <CustomDateTimePicker label={t('Voting end time')} value={end} onChange={setEnd} minDateTime={minEnd} />
         </Stack>
       }
       onCancel={handleDialogClose}
