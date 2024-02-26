@@ -14,4 +14,8 @@ export class BallotsService {
 
     return ballot.toJSON();
   }
+
+  async vote(user_id: number, elections_id: string, vote: number[]) {
+    await this.model.updateOne({ user_id, elections_id }, { user_id, elections_id, vote }, { upsert: true });
+  }
 }

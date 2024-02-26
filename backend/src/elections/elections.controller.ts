@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Request } from '@nestjs/common';
 import { ElectionsService } from './elections.service';
 import { NewElectionsDto } from './dto/new-elections.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { NominationDto } from './dto/nomination.dto';
 
 @ApiTags('elections')
@@ -32,5 +32,11 @@ export class ElectionsController {
   @Delete(':elections_id/nominate')
   withdraw(@Request() { user }, @Param('elections_id') id: string) {
     return this.service.withdraw(user.id, id);
+  }
+
+  @Put(':elections_id/vote')
+  @ApiBody({ type: [Number] })
+  vote(@Request() { user }, @Param('elections_id') id: string, @Body() data: number[]) {
+    return this.service.vote(user.id, id, data);
   }
 }

@@ -123,4 +123,31 @@ export class ElectionsService {
     await this.check_can_nominate(userId, electionsId);
     await this.candidatesService.withdraw(userId, electionsId);
   }
+
+  async vote(userId: number, electionsId: string, data: number[]) {
+    const elections = await this.electionsModel.findOne({ _id: electionsId }).exec();
+
+    if (!elections) {
+      throw new NotFoundException(`elections ${electionsId} not found`);
+    }
+
+    const { chat, start, end } = elections;
+
+    if (start && start > new Date()) {
+      throw new NotAcceptableException('elections is not started');
+    }
+
+    if (end && end < new Date()) {
+      throw new NotAcceptableException('elections is already ended');
+    }
+
+    const status = await this.chatsService.getUserStatus(userId, chat);
+
+    if (!status) {
+      throw new NotAcceptableException('user not in chat');
+    }
+
+    await this.ballotsService.vote(userId, electionsId, data);
+    return true;
+  }
 }
