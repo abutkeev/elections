@@ -5,12 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Elections, ElectionsSchema } from './schemas/elections.schema';
 import { ChatsModule } from 'src/chats/chats.module';
 import { CandidatesModule } from 'src/candidates/candidates.module';
+import { BallotsModule } from 'src/ballots/ballots.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Elections.name, schema: ElectionsSchema }]),
     ChatsModule,
     CandidatesModule,
+    BallotsModule,
   ],
   providers: [ElectionsService],
   controllers: [ElectionsController],

@@ -14,12 +14,14 @@ import { NewElectionsDto } from './dto/new-elections.dto';
 import { ElectionsDto } from './dto/elections.dto';
 import { NominationDto } from './dto/nomination.dto';
 import { CandidatesService } from 'src/candidates/candidates.service';
+import { BallotsService } from 'src/ballots/ballots.service';
 
 @Injectable()
 export class ElectionsService {
   constructor(
     @InjectModel(Elections.name) private electionsModel: Model<Elections>,
     private candidatesService: CandidatesService,
+    private ballotsService: BallotsService,
     private chatsService: ChatsService
   ) {}
 
@@ -34,6 +36,7 @@ export class ElectionsService {
         if (!status) continue;
         const chatInfo = this.chatsService.getChat(chat);
         const candidates = await this.candidatesService.find(id);
+        const ballot = await this.ballotsService.get(userId, id);
         result.push({
           id,
           title,
@@ -43,6 +46,7 @@ export class ElectionsService {
           end: end?.toISOString(),
           can_edit: status === 'admin',
           candidates,
+          vote: ballot?.vote,
         });
       } catch (e) {
         this.logger.error(e);

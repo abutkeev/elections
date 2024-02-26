@@ -25,4 +25,7 @@ export class ElectionsDto {
 
   @ApiProperty({ required: true })
   candidates: CandidateDto[];
+
+  @ApiProperty({ required: false })
+  vote?: number[];
 }
