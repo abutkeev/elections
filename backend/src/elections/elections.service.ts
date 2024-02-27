@@ -34,14 +34,14 @@ export class ElectionsService {
       try {
         const status = await this.chatsService.getUserStatus(userId, chat);
         if (!status) continue;
-        const chatInfo = this.chatsService.getChat(chat);
+        const chatInfo = await this.chatsService.getChat(chat);
         const candidates = await this.candidatesService.find(id);
         const ballot = await this.ballotsService.get(userId, id);
         result.push({
           id,
           title,
           chat_id: chat,
-          chat_title: (await chatInfo).title,
+          chat_title: chatInfo.title,
           start: start?.toISOString(),
           end: end?.toISOString(),
           can_edit: status === 'admin',
