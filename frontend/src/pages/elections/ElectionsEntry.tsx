@@ -13,7 +13,7 @@ interface ElectionsEntryProps {
 }
 
 const ElectionsEntry: FC<ElectionsEntryProps> = ({ entry }) => {
-  const { id, title, chat_title, start, end, can_edit, candidates } = entry;
+  const { id, title, chat_title, start, end, can_edit } = entry;
   const { t } = useTranslation();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [edit] = useElectionsEditMutation();
@@ -33,7 +33,7 @@ const ElectionsEntry: FC<ElectionsEntryProps> = ({ entry }) => {
         <Divider />
         <LabledText label={t('Voting start time')} labelSuffix=':' text={formatIsoTimeString(start)} />
         <LabledText label={t('Voting end time')} labelSuffix=':' text={formatIsoTimeString(end)} />
-        <ElectionsDetails id={id} start={start} end={end} candidates={candidates} />
+        <ElectionsDetails {...entry} />
       </Paper>
       <ElectionsInfoEditDialog
         item={entry}
