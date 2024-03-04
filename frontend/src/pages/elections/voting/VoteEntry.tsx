@@ -23,7 +23,7 @@ const VoteEntry: FC<VoteEntryProps> = ({
   return (
     <Stack direction='column' spacing={1} pl={2}>
       <Divider />
-      <Stack direction='row' spacing={1}>
+      <Stack direction='row' spacing={1} alignItems='center'>
         {place && <Typography minWidth='3ch'>{place}</Typography>}
         <Typography>{name}</Typography>
         <Box flexGrow={1} />
