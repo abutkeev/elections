@@ -1,10 +1,11 @@
-import { CandidateDto } from '@/api/api';
-import { Divider, Stack } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import { CandidateDto, useElectionsGetQuery, useElectionsVoteMutation } from '@/api/api';
+import { Divider, Stack, Toolbar } from '@mui/material';
+import { FC, useEffect, useMemo, useState } from 'react';
 import VoteEntry from './VoteEntry';
 import { useTranslation } from 'react-i18next';
 import EmptyListWrapper from '@/components/common/EmptyListWrapper';
 import LabledText from '@/components/common/LabledText';
+import ProgressButton from '@/components/common/ProgressButton';
 
 interface VotingProps {
   electionsId: string;
@@ -12,10 +13,20 @@ interface VotingProps {
   vote?: number[];
 }
 
-const Voting: FC<VotingProps> = ({ vote, candidates }) => {
+const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
   const { t } = useTranslation();
   const [places, setPlaces] = useState<CandidateDto[]>([]);
   const [last, setLast] = useState<CandidateDto[]>([]);
+  const { isFetching } = useElectionsGetQuery();
+  const [save] = useElectionsVoteMutation();
+
+  const modified = useMemo(() => {
+    if (!vote) {
+      return !!places.length;
+    }
+
+    return JSON.stringify(vote) !== JSON.stringify(places.map(({ user_id }) => user_id));
+  }, [vote, places]);
 
   useEffect(() => {
     const places: CandidateDto[] = [];
@@ -50,6 +61,10 @@ const Voting: FC<VotingProps> = ({ vote, candidates }) => {
     setPlaces([...places, last[index]]);
   };
 
+  const handleVote = async () => {
+    await save({ electionsId, body: places.map(({ user_id }) => user_id) });
+  };
+
   if (candidates.length === 0) {
     return <EmptyListWrapper wrap message={t('No candidates')} />;
   }
@@ -76,6 +91,13 @@ const Voting: FC<VotingProps> = ({ vote, candidates }) => {
             <VoteEntry key={entry.user_id} entry={entry} handleRestore={getRestoreHandler(index)} />
           ))}
         </Stack>
+      )}
+      {modified && (
+        <Toolbar>
+          <ProgressButton onClick={handleVote} refreshing={isFetching}>
+            {vote ? t('Change your vote') : t('Vote')}
+          </ProgressButton>
+        </Toolbar>
       )}
     </Stack>
   );
