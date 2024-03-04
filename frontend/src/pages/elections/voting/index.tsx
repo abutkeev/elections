@@ -26,7 +26,9 @@ const Voting: FC<VotingProps> = ({ vote, candidates }) => {
     }
     setPlaces(places);
     setLast(
-      vote ? candidates.filter(({ user_id }) => vote.includes(user_id)) : candidates.slice().sort(() => Math.random() - 0.5)
+      vote
+        ? candidates.filter(({ user_id }) => !vote.includes(user_id))
+        : candidates.slice().sort(() => Math.random() - 0.5)
     );
   }, [vote, candidates]);
 
