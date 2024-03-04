@@ -15,7 +15,12 @@ const CustomDateTimePicker: FC<DateTimePickerProps<Dayjs>> = props => {
           field: { clearable: true, ...props.slotProps?.field },
           actionBar: { actions: ['accept', 'cancel', 'clear'], ...props.slotProps?.actionBar },
         }}
-        localeText={{ clearButtonLabel: t('Clear'), cancelButtonLabel: t('Cancel'), ...props.localeText }}
+        localeText={{
+          clearButtonLabel: t('Clear'),
+          fieldClearLabel: t('Clear'),
+          cancelButtonLabel: t('Cancel'),
+          ...props.localeText,
+        }}
         views={props.views || ['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
         {...props}
       />
