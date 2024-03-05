@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CandidateDto } from './candidate.dto';
+import { ResultsDto } from './results.dto';
 
 export class ElectionsDto {
   @ApiProperty({ required: true })
@@ -28,4 +29,7 @@ export class ElectionsDto {
 
   @ApiProperty({ required: false })
   vote?: number[];
+
+  @ApiProperty({ required: false })
+  results?: ResultsDto;
 }

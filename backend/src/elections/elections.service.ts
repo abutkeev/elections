@@ -15,6 +15,9 @@ import { ElectionsDto } from './dto/elections.dto';
 import { NominationDto } from './dto/nomination.dto';
 import { CandidatesService } from 'src/candidates/candidates.service';
 import { BallotsService } from 'src/ballots/ballots.service';
+import SchulzeElections from 'libs/schulze/schulze-elections';
+import { ResultsDto } from './dto/results.dto';
+import { ResultDto } from './dto/result.dto';
 
 @Injectable()
 export class ElectionsService {
@@ -27,6 +30,28 @@ export class ElectionsService {
 
   private logger = new Logger('ElectionsService');
 
+  private async get_results(id: string): Promise<ResultsDto | undefined> {
+    const candidates = await this.candidatesService.find(id);
+    const votes = await this.ballotsService.getVotes(id);
+
+    if (!candidates?.length || !votes?.length) {
+      return undefined;
+    }
+
+    const counter = new SchulzeElections(candidates, votes);
+
+    const mapResults = ([user_id, result]: readonly [number, number]): ResultDto => ({ user_id, result });
+
+    return {
+      votes,
+      schulze: counter.get_results().map(mapResults),
+      firsts: counter.get_firsts().map(mapResults),
+      lasts: counter.get_lasts().map(mapResults),
+      top5: counter.get_five().map(mapResults),
+      quorum: counter.get_quorum(),
+    };
+  }
+
   async get(userId: number): Promise<ElectionsDto[]> {
     const elections = await this.electionsModel.find();
     const result: ElectionsDto[] = [];
@@ -37,6 +62,7 @@ export class ElectionsService {
         const chatInfo = await this.chatsService.getChat(chat);
         const candidates = await this.candidatesService.find(id);
         const ballot = await this.ballotsService.get(userId, id);
+        const results = await this.get_results(id);
         result.push({
           id,
           title,
@@ -47,6 +73,7 @@ export class ElectionsService {
           can_edit: status === 'admin',
           candidates,
           vote: ballot?.vote,
+          results,
         });
       } catch (e) {
         this.logger.error(e);

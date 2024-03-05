@@ -27,7 +27,7 @@ const print_results = (results: (readonly [number, number])[]) => {
 createReadStream(process.argv[2])
   .pipe(csvParser({ headers: false }))
   .on('data', data => {
-    const vote = Object.entries(data).map(([_, name]) => name as string);
+    const vote = Object.entries(data).map(([, name]) => name as string);
     const last = vote.pop().split(',');
 
     const addCandidate = (name: string) => {

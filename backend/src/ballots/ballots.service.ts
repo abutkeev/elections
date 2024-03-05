@@ -18,4 +18,14 @@ export class BallotsService {
   async vote(user_id: number, elections_id: string, vote: number[]) {
     await this.model.updateOne({ user_id, elections_id }, { user_id, elections_id, vote }, { upsert: true });
   }
+
+  async getVotes(elections_id: string): Promise<number[][] | undefined> {
+    const votes = await this.model.find({ elections_id }).exec();
+
+    if (!votes || votes.length === 0) {
+      return undefined;
+    }
+
+    return votes.map(({ vote }) => vote);
+  }
 }
