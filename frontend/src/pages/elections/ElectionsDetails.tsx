@@ -10,7 +10,7 @@ const ElectionsDetails: FC<ElectionsDto> = ({ id, start, end, candidates, vote }
   const { t } = useTranslation();
   const [tab, setTab] = useState<'vote' | 'results'>('vote');
 
-  if (!start || new Date(start) > new Date()) {
+  if ((!start && (!end || new Date(end) > new Date())) || (start && new Date(start) > new Date())) {
     return (
       <>
         <CandidatesList candidates={candidates} />
