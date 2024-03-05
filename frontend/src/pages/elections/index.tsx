@@ -6,6 +6,7 @@ import { useElectionsGetQuery } from '@/api/api';
 import LoadingWrapper from '@/components/common/LoadingWrapper';
 import ElectionsEntry from './ElectionsEntry';
 import { Tab, Tabs } from '@mui/material';
+import EmptyListWrapper from '@/components/common/EmptyListWrapper';
 
 type TabName = 'voting' | 'nomination' | 'results';
 
@@ -81,14 +82,14 @@ const ElectionsPage: FC = () => {
 
   return (
     <LoadingWrapper loading={isLoading} error={isError}>
-      {(haveNomination || haveVoting || haveResults) && (
+      <EmptyListWrapper wrap={!haveNomination && !haveResults && !haveVoting} message={t('No elections')}>
         <Tabs value={tab} onChange={(_, newTab) => setCurrentTab(newTab)} variant='scrollable' scrollButtons='auto'>
           {haveVoting && <Tab value='voting' label={t('Voting')} />}
           {haveNomination && <Tab value='nomination' label={t('Nomination')} />}
           {haveResults && <Tab value='results' label={t('Results')} />}
         </Tabs>
-      )}
-      {tab && elections[tab].map(entry => <ElectionsEntry key={entry.id} entry={entry} />)}
+        {tab && elections[tab].map(entry => <ElectionsEntry key={entry.id} entry={entry} />)}
+      </EmptyListWrapper>
       <ElectionsAddForm />
     </LoadingWrapper>
   );
