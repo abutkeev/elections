@@ -17,7 +17,7 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
   const { t } = useTranslation();
   const [places, setPlaces] = useState<CandidateDto[]>([]);
   const [last, setLast] = useState<CandidateDto[]>([]);
-  const { isFetching } = useElectionsGetQuery();
+  const { isFetching, refetch } = useElectionsGetQuery();
   const [save] = useElectionsVoteMutation();
 
   const modified = useMemo(() => {
@@ -62,7 +62,8 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
   };
 
   const handleVote = async () => {
-    await save({ electionsId, body: places.map(({ user_id }) => user_id) });
+    await save({ electionsId, body: places.map(({ user_id }) => user_id) }).unwrap();
+    await refetch();
   };
 
   if (candidates.length === 0) {

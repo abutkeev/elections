@@ -35,7 +35,7 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
   const [start, setStart] = useUpdatingState<Dayjs | null>(defaultStart);
   const [end, setEnd] = useUpdatingState<Dayjs | null>(defaultEnd);
   const { data: chats = [] } = useChatsGetQuery();
-  const { isFetching } = useElectionsGetQuery();
+  const { isFetching, refetch } = useElectionsGetQuery();
 
   const handleDialogClose = () => {
     onClose();
@@ -47,7 +47,7 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
     }, 1000);
   };
 
-  const handleAdd = async () => {
+  const handleSave = async () => {
     if (!chat || !title) return;
     await onSave({
       chat,
@@ -55,6 +55,7 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
       start: start?.toISOString(),
       end: end?.toISOString(),
     });
+    await refetch();
   };
 
   const valid = !!title && !!chat && !(start && end && start >= end);
@@ -85,7 +86,7 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
         </Stack>
       }
       onCancel={handleDialogClose}
-      onConfirm={handleAdd}
+      onConfirm={handleSave}
       confirmButtonText={confirmButtonText}
       confirmButtonProps={{ disabled: !valid, refreshing: isFetching, finalAction: handleDialogClose }}
     />

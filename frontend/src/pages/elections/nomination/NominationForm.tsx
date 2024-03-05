@@ -25,16 +25,18 @@ const NominationForm: FC<NominationFormProps> = ({ electionsId, candidates }) =>
   const [showForm, setShowForm] = useUpdatingState(nominated);
   const [name, setName] = useUpdatingState(nomination?.name || auth?.name || '');
   const [program, setProgram] = useUpdatingState(nomination?.program || '');
-  const { isFetching } = useElectionsGetQuery();
+  const { isFetching, refetch } = useElectionsGetQuery();
   const [nominate] = useElectionsNominateMutation();
   const [withdraw] = useElectionsWithdrawMutation();
 
   const handleNominate = async () => {
-    await nominate({ electionsId, nominationDto: { name, program } });
+    await nominate({ electionsId, nominationDto: { name, program } }).unwrap();
+    await refetch();
   };
 
   const handleWithdraw = async () => {
-    await withdraw({ electionsId });
+    await withdraw({ electionsId }).unwrap();
+    await refetch();
   };
 
   if (!showForm) {
