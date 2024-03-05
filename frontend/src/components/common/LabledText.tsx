@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Stack, Typography, TypographyProps } from '@mui/material';
 
 interface LabledTextProps extends TypographyProps {
-  text?: string;
+  text?: string | number;
   label: string;
   labelSuffix?: string;
 }
