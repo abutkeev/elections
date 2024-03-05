@@ -87,7 +87,7 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
       {last.length !== 0 && (
         <Stack direction='column' pl={1}>
           <Divider />
-          <LabledText label={t('Last place')} labelSuffix=':' text='' />
+          <LabledText label={t('Last place')} labelSuffix=':' />
           {last.map((entry, index) => (
             <VoteEntry key={entry.user_id} entry={entry} handleRestore={getRestoreHandler(index)} />
           ))}

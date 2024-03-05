@@ -13,7 +13,7 @@ const CandidatesList: FC<Pick<ElectionsDto, 'candidates'>> = ({ candidates }) =>
   return (
     <>
       <Divider />
-      <LabledText label={t('Candidates')} labelSuffix=':' text='' />
+      <LabledText label={t('Candidates')} labelSuffix=':' />
       <Box ml={2}>
         {candidates.map(({ user_id, name, program }) => (
           <CandidateInfo key={user_id} name={name} program={program} />

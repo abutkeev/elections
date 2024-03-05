@@ -53,7 +53,7 @@ const NominationForm: FC<NominationFormProps> = ({ electionsId, candidates }) =>
   return (
     <>
       <Divider />
-      <LabledText label={t('Nomination')} labelSuffix=':' text='' />
+      <LabledText label={t('Nomination')} labelSuffix=':' />
       <Stack direction='column' spacing={2} pl={2}>
         <TextField fullWidth label={t('Name')} value={name} onChange={({ target: { value } }) => setName(value)} />
         <TextField
