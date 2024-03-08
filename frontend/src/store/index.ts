@@ -7,17 +7,20 @@ import snackbarsSlice from './features/snackbars';
 import authSlice, { authMiddleware } from './features/auth';
 import { api } from '@/api/api';
 import themeSlice from './features/theme';
+import { websocketMiddleware, websocketSlice } from './features/websocket';
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
+    [websocketSlice.name]: websocketSlice.reducer,
     [searchSlice.name]: searchSlice.reducer,
     [titleSlice.name]: titleSlice.reducer,
     [snackbarsSlice.name]: snackbarsSlice.reducer,
     [authSlice.name]: authSlice.reducer,
     [themeSlice.name]: themeSlice.reducer,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().prepend([authMiddleware]).concat(api.middleware),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().prepend([authMiddleware, websocketMiddleware]).concat(api.middleware),
 });
 
 setupListeners(store.dispatch);

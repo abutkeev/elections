@@ -26,6 +26,11 @@ export default defineConfig(({ mode }) => {
           secure: false,
           target: backendUrl,
         },
+        '/socket.io': {
+          secure: false,
+          target: backendUrl,
+          ws: true,
+        },
       },
     },
     define: {

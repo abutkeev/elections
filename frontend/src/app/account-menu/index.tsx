@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { AccountCircle, Settings } from '@mui/icons-material';
-import { IconButton, Menu } from '@mui/material';
+import { Badge, IconButton, Menu } from '@mui/material';
 import useAuthData from '@/hooks/useAuthData';
 import AppbarMenuButton from '../app-bar/AppbarMenuButton';
 import LogoutMenuItem from './LogoutMenuItem';
 import SettingsDialog from './settings/SettingsDialog';
 import SettingsMenuItem from './settings/SettingsMenuItem';
+import useWebSocket from '@/hooks/useWebSocket';
 
 export interface AccountMenuItemProps {
   closeMenu(): void;
@@ -19,6 +20,7 @@ const AccountMenu: React.FC = () => {
   const [menuAhchor, setMenuAnchor] = useState<HTMLElement>();
   const { id } = useAuthData() || {};
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
+  const connected = useWebSocket();
 
   const closeMenu = () => setMenuAnchor(undefined);
 
@@ -36,7 +38,9 @@ const AccountMenu: React.FC = () => {
   return (
     <>
       <AppbarMenuButton menuAhchor={menuAhchor} setMenuAnchor={setMenuAnchor}>
-        <AccountCircle />
+        <Badge variant='dot' color={connected ? 'success' : 'error'}>
+          <AccountCircle />
+        </Badge>
       </AppbarMenuButton>
       <Menu anchorEl={menuAhchor} open={!!menuAhchor} onClose={closeMenu} sx={{ mt: 1 }}>
         <SettingsMenuItem setShowDialog={setShowSettingsDialog} closeMenu={closeMenu} />
