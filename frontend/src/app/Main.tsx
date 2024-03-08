@@ -5,9 +5,12 @@ import { useAppSelector } from '@/store';
 import Snackbar from './Snackbar';
 import AppBar from './app-bar/AppBar';
 import ReloadPrompt from './ReloadPrompt';
+import Footer from './footer';
+import { useRef } from 'react';
 
 const Main: React.FC = () => {
   const title = useAppSelector(({ title }) => title);
+  const mainRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
@@ -18,10 +21,11 @@ const Main: React.FC = () => {
       </HelmetProvider>
       <AppBar />
       <Snackbar />
-      <Container sx={{ my: 1, maxWidth: 'md' }}>
+      <Container ref={mainRef} sx={{ my: 1, maxWidth: 'md', overflow: 'hidden' }}>
         <ReloadPrompt />
         <Outlet />
       </Container>
+      <Footer mainRef={mainRef} />
     </>
   );
 };

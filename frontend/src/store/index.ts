@@ -8,6 +8,7 @@ import authSlice, { authMiddleware } from './features/auth';
 import { api } from '@/api/api';
 import themeSlice from './features/theme';
 import { websocketMiddleware, websocketSlice } from './features/websocket';
+import newElectionsDialogSlice from './features/new-elections-dialog';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     [snackbarsSlice.name]: snackbarsSlice.reducer,
     [authSlice.name]: authSlice.reducer,
     [themeSlice.name]: themeSlice.reducer,
+    [newElectionsDialogSlice.name]: newElectionsDialogSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend([authMiddleware, websocketMiddleware]).concat(api.middleware),
