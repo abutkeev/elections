@@ -6,6 +6,7 @@ import { Elections, ElectionsSchema } from './schemas/elections.schema';
 import { ChatsModule } from 'src/chats/chats.module';
 import { CandidatesModule } from 'src/candidates/candidates.module';
 import { BallotsModule } from 'src/ballots/ballots.module';
+import { EventsModule } from 'src/events/events.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { BallotsModule } from 'src/ballots/ballots.module';
     ChatsModule,
     CandidatesModule,
     BallotsModule,
+    EventsModule,
   ],
   providers: [ElectionsService],
   controllers: [ElectionsController],

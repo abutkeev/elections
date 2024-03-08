@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ElectionsModule } from './elections/elections.module';
 import { CandidatesModule } from './candidates/candidates.module';
 import { BallotsModule } from './ballots/ballots.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { BallotsModule } from './ballots/ballots.module';
     ElectionsModule,
     CandidatesModule,
     BallotsModule,
+    EventsModule,
   ],
 })
 export class AppModule {}

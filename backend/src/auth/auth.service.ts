@@ -1,9 +1,17 @@
-import { BadRequestException, ForbiddenException, Injectable, ServiceUnavailableException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { TelegramAuthDataDto } from './dto/telegram-auth-data.dto';
 import { TELEGRAM_BOT_TOKEN } from 'src/constants';
 import { createHash, createHmac } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginResponseDto } from './dto/login-response.dto';
+
+const logger = new Logger('AuthService');
 
 @Injectable()
 export class AuthService {
@@ -40,5 +48,21 @@ export class AuthService {
       throw new ForbiddenException('hash check failed');
     }
     return this.login(data);
+  }
+
+  async verify(token: string): Promise<{ id: number } | null> {
+    try {
+      const { sub: id, ...other } = this.jwtService.verify(token, { ignoreExpiration: false });
+      delete other.iat;
+      delete other.exp;
+      const user = { id, ...other };
+      if (this.verifyAuthData(user)) {
+        return user;
+      }
+      return null;
+    } catch (e) {
+      logger.error('Token verification error', e);
+      return null;
+    }
   }
 }
