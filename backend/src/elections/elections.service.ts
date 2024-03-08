@@ -101,15 +101,15 @@ export class ElectionsService {
     }
   }
 
-  private async notifyConnectedMembers(chatId: number) {
+  private async notifyConnectedMembers(chatId: number, skipInstance: string) {
     for (const userId of this.eventsService.getConnected()) {
       const status = await this.chatsService.getUserStatus(userId, chatId);
       if (!status) continue;
-      this.eventsService.sendToUser({ userId, message: 'invalidate_tag', args: 'elections' });
+      this.eventsService.sendToUser({ userId, message: 'invalidate_tag', args: 'elections', skipInstance });
     }
   }
 
-  async add(userId: number, data: NewElectionsDto) {
+  async add(userId: number, data: NewElectionsDto, skipInstance: string) {
     const { chat, title } = data;
     const status = await this.chatsService.getUserStatus(userId, chat);
     if (status !== 'admin') {
@@ -117,11 +117,11 @@ export class ElectionsService {
     }
     const { start, end } = this.get_time(data);
     await this.electionsModel.create({ chat, title, start, end });
-    this.notifyConnectedMembers(chat);
+    this.notifyConnectedMembers(chat, skipInstance);
     return true;
   }
 
-  async edit(userId: number, electionsId: string, data: NewElectionsDto) {
+  async edit(userId: number, electionsId: string, data: NewElectionsDto, skipInstance: string) {
     const { chat, title } = data;
     const status = await this.chatsService.getUserStatus(userId, chat);
     if (status !== 'admin') {
@@ -129,7 +129,7 @@ export class ElectionsService {
     }
     const { start, end } = this.get_time(data);
     await this.electionsModel.updateOne({ _id: electionsId }, { chat, title, start, end });
-    this.notifyConnectedMembers(chat);
+    this.notifyConnectedMembers(chat, skipInstance);
     return true;
   }
 
@@ -153,24 +153,24 @@ export class ElectionsService {
     }
   }
 
-  private async notifyElectionsMember(electionsId: string) {
+  private async notifyElectionsMember(electionsId: string, skipInstance: string) {
     const { chat } = await this.electionsModel.findOne({ _id: electionsId }).exec();
-    this.notifyConnectedMembers(chat);
+    this.notifyConnectedMembers(chat, skipInstance);
   }
 
-  async nominate(userId: number, electionsId: string, data: NominationDto) {
+  async nominate(userId: number, electionsId: string, data: NominationDto, skipInstance: string) {
     await this.check_can_nominate(userId, electionsId);
     await this.candidatesService.nominate(userId, electionsId, data);
-    this.notifyElectionsMember(electionsId);
+    this.notifyElectionsMember(electionsId, skipInstance);
   }
 
-  async withdraw(userId: number, electionsId: string) {
+  async withdraw(userId: number, electionsId: string, skipInstance: string) {
     await this.check_can_nominate(userId, electionsId);
     await this.candidatesService.withdraw(userId, electionsId);
-    this.notifyElectionsMember(electionsId);
+    this.notifyElectionsMember(electionsId, skipInstance);
   }
 
-  async vote(userId: number, electionsId: string, data: number[]) {
+  async vote(userId: number, electionsId: string, data: number[], skipInstance: string) {
     const elections = await this.electionsModel.findOne({ _id: electionsId }).exec();
 
     if (!elections) {
@@ -194,7 +194,7 @@ export class ElectionsService {
     }
 
     await this.ballotsService.vote(userId, electionsId, data);
-    this.notifyElectionsMember(electionsId);
+    this.notifyElectionsMember(electionsId, skipInstance);
     return true;
   }
 }
