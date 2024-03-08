@@ -88,7 +88,7 @@ const ElectionsInfoEditDialog: FC<ElectionsInfoEditDialogProps> = ({
       onCancel={handleDialogClose}
       onConfirm={handleSave}
       confirmButtonText={confirmButtonText}
-      confirmButtonProps={{ disabled: !valid, refreshing: isFetching, finalAction: handleDialogClose }}
+      confirmButtonProps={{ disabled: !valid, refreshing: isFetching, finalAction: onClose }}
     />
   );
 };
