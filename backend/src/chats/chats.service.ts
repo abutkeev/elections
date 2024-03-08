@@ -5,11 +5,13 @@ import { Chat } from './schemas/chat.schema';
 import { InjectBot } from 'nestjs-telegraf';
 import { Telegraf, Context } from 'telegraf';
 import { ChatDto } from './dto/chat.dto';
+import { EventsService } from 'src/events/events.service';
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectModel(Chat.name) private chatsModel: Model<Chat>,
+    private eventsService: EventsService,
     @InjectBot() private bot: Telegraf<Context>
   ) {}
 
@@ -23,6 +25,11 @@ export class ChatsService {
       return;
     }
     await this.chatsModel.updateOne({ id: data.id }, { $set: data }, { upsert: true });
+    for (const userId of this.eventsService.getConnected()) {
+      const status = await this.getUserStatus(userId, id);
+      if (status !== 'admin') continue;
+      this.eventsService.sendToUser({ userId, message: 'invalidate_tag', args: 'chats' });
+    }
   }
 
   async getUserStatus(userId: number, chatId: number): Promise<'member' | 'admin' | undefined> {

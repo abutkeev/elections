@@ -24,7 +24,7 @@ export class TgBotService {
     await ctx.reply('chat info updated');
   }
 
-  @On('my_chat_member')
+  @On(['my_chat_member'])
   async saveChat(@Ctx() ctx: Context<UpdateNamespace.MyChatMemberUpdate>) {
     const { type } = ctx.chat;
 
