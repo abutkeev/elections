@@ -3,7 +3,6 @@ import { Divider, Stack, Toolbar } from '@mui/material';
 import { FC, useEffect, useMemo, useState } from 'react';
 import VoteEntry from './VoteEntry';
 import { useTranslation } from 'react-i18next';
-import EmptyListWrapper from '@/components/common/EmptyListWrapper';
 import LabledText from '@/components/common/LabledText';
 import ProgressButton from '@/components/common/ProgressButton';
 
@@ -67,7 +66,7 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
   };
 
   if (candidates.length === 0) {
-    return <EmptyListWrapper wrap message={t('No candidates')} />;
+    return <LabledText label={t('No candidates')} />;
   }
 
   return (
