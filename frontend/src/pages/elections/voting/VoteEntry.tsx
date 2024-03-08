@@ -2,6 +2,7 @@ import { CandidateDto } from '@/api/api';
 import { ArrowDownward, ArrowUpward, VerticalAlignBottom, VerticalAlignTop } from '@mui/icons-material';
 import { Box, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { FC } from 'react';
+import CandidateEntry from './CandidateEntry';
 
 interface VoteEntryProps {
   entry: CandidateDto;
@@ -14,7 +15,7 @@ interface VoteEntryProps {
 
 const VoteEntry: FC<VoteEntryProps> = ({
   place,
-  entry: { name },
+  entry: { name, program },
   handleUp,
   handleDown,
   handleRemove,
@@ -25,7 +26,7 @@ const VoteEntry: FC<VoteEntryProps> = ({
       <Divider />
       <Stack direction='row' spacing={1} alignItems='center'>
         {place && <Typography minWidth='3ch'>{place}</Typography>}
-        <Typography>{name}</Typography>
+        <CandidateEntry name={name} program={program} />
         <Box flexGrow={1} />
         {handleUp && (
           <IconButton onClick={handleUp}>
