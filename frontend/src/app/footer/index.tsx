@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { FC, RefObject, useRef } from 'react';
 import NewElectionsButton from './NewElectionsButton';
 import useResizeObserver from '@/hooks/useResizeObserver';
@@ -10,20 +10,19 @@ interface FooterProps {
 }
 
 const Footer: FC<FooterProps> = ({ mainRef }) => {
-  const [footerRef, footerEntries] = useResizeObserver<HTMLDivElement>();
   const [footerBarRef, footerBarEntries] = useResizeObserver<HTMLDivElement>();
   const buttonRef = useRef<HTMLDivElement>(null);
   const buttonOverlaps = useIsOverlaps({ root: mainRef.current, element: buttonRef.current });
 
-  const marginHeight = buttonOverlaps ? footerEntries[0]?.contentRect.height : footerBarEntries[0]?.contentRect.height;
+  const footerBarHeight = footerBarEntries[0]?.contentRect.height;
+  const buttonHeight = buttonRef.current?.getBoundingClientRect().height || 0;
+  const marginHeight = footerBarHeight + (buttonOverlaps ? buttonHeight : 0);
 
   return (
     <>
       <Box height={marginHeight} mt={1} />
-      <Stack ref={footerRef} direction='column' position='fixed' bottom={0} spacing={1} width='100%'>
-        <NewElectionsButton ref={buttonRef} />
-        <FooterBar ref={footerBarRef} />
-      </Stack>
+      <NewElectionsButton ref={buttonRef} bottom={footerBarHeight} />
+      <FooterBar ref={footerBarRef} />
     </>
   );
 };

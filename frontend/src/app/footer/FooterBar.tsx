@@ -11,7 +11,7 @@ const FooterBar = forwardRef<HTMLDivElement>((_, ref) => {
   const mobile = useMobile();
 
   return (
-    <Paper ref={ref}>
+    <Paper ref={ref} sx={{ position: 'fixed', bottom: 0, width: '100%' }}>
       <Stack
         spacing={mobile ? 0 : 1}
         direction={mobile ? 'column' : 'row'}
