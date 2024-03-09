@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import ResultList from './ResultList';
 import CustomAccordion from '@/components/common/CustomAccordion';
+import DownloadResultsButton from './DownloadResultsButton';
 
 interface ElectionsResultsProps {
   candidates?: CandidateDto[];
@@ -44,6 +45,7 @@ const ElectionsResults: FC<ElectionsResultsProps> = ({ candidates, results }) =>
           </>
         }
       />
+      <DownloadResultsButton candidates={candidates} votes={votes} />
     </Stack>
   );
 };
