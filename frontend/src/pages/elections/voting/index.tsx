@@ -5,6 +5,7 @@ import VoteEntry from './VoteEntry';
 import { useTranslation } from 'react-i18next';
 import LabledText from '@/components/common/LabledText';
 import ProgressButton from '@/components/common/ProgressButton';
+import FlipMove from 'react-flip-move';
 
 interface VotingProps {
   electionsId: string;
@@ -72,24 +73,28 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
   return (
     <Stack direction='column'>
       <Stack direction='column' pl={1}>
-        {places.map((entry, index) => (
-          <VoteEntry
-            key={entry.user_id}
-            place={index + 1}
-            entry={entry}
-            handleUp={index !== 0 && getSwapHandler(index, index - 1)}
-            handleDown={index !== places.length - 1 && getSwapHandler(index, index + 1)}
-            handleRemove={getRemoveHandler(index)}
-          />
-        ))}
+        <FlipMove>
+          {places.map((entry, index) => (
+            <VoteEntry
+              key={entry.user_id}
+              place={index + 1}
+              entry={entry}
+              handleUp={index !== 0 && getSwapHandler(index, index - 1)}
+              handleDown={index !== places.length - 1 && getSwapHandler(index, index + 1)}
+              handleRemove={getRemoveHandler(index)}
+            />
+          ))}
+        </FlipMove>
       </Stack>
       {last.length !== 0 && (
         <Stack direction='column' pl={1}>
           <Divider />
           <LabledText label={t('Last place')} labelSuffix=':' />
-          {last.map((entry, index) => (
-            <VoteEntry key={entry.user_id} entry={entry} handleRestore={getRestoreHandler(index)} />
-          ))}
+          <FlipMove>
+            {last.map((entry, index) => (
+              <VoteEntry key={entry.user_id} entry={entry} handleRestore={getRestoreHandler(index)} />
+            ))}
+          </FlipMove>
         </Stack>
       )}
       {modified && (
