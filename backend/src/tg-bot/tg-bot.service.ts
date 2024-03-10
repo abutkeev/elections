@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Update as UpdateNamespace } from '@telegraf/types/update';
-import { Ctx, On, Start, Update } from 'nestjs-telegraf';
+import { Command, Ctx, On, Start, Update } from 'nestjs-telegraf';
 import { ChatsService } from 'src/chats/chats.service';
 import { Context } from 'telegraf';
 
@@ -9,6 +9,7 @@ import { Context } from 'telegraf';
 export class TgBotService {
   constructor(private chatsService: ChatsService) {}
   @Start()
+  @Command('update')
   async start(@Ctx() ctx: Context) {
     const { type } = ctx.chat;
 
