@@ -5,6 +5,7 @@ import useMobile from '@/hooks/useMobile';
 import { useTranslation } from 'react-i18next';
 import FooterBarSeparator from './FooterBarSeparator';
 import FooterLink from './FooterLink';
+import formatIsoTimeString from '@/utils/formatIsoTimeString';
 
 const FooterBar = forwardRef<HTMLDivElement>((_, ref) => {
   const { t } = useTranslation();
@@ -33,6 +34,17 @@ const FooterBar = forwardRef<HTMLDivElement>((_, ref) => {
           {t('Report an issue')}
         </FooterLink>
       </Stack>
+      {!mobile && (
+        <Stack spacing={1} direction='row' mb={1} justifyContent='center' alignItems='center'>
+          <Typography variant='body2'>
+            {t('Version')}: {VERSION}
+          </Typography>
+          <FooterBarSeparator />
+          <Typography variant='body2'>
+            {t('Build date')}: {formatIsoTimeString(BUILD_DATE)}
+          </Typography>
+        </Stack>
+      )}
     </Paper>
   );
 });
