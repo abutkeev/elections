@@ -6,6 +6,9 @@ const formatIsoTimeString = (isoTimeString?: string): string => {
   }
   try {
     const date = new Date(isoTimeString);
+    if (!date.getSeconds() && !date.getMinutes() && !date.getHours()) {
+      return date.toLocaleDateString();
+    }
     return date.toLocaleString();
   } catch {
     return isoTimeString;
