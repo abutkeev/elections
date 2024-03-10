@@ -3,7 +3,7 @@ import LabledText from '@/components/common/LabledText';
 import { Divider, Stack, Typography } from '@mui/material';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import ResultList from './ResultList';
+import ResultsTable from './ResultsTable';
 import CustomAccordion from '@/components/common/CustomAccordion';
 import DownloadResultsButton from './DownloadResultsButton';
 
@@ -27,9 +27,9 @@ const ElectionsResults: FC<ElectionsResultsProps> = ({ candidates, results }) =>
 
   return (
     <Stack>
-      <LabledText label={t('Number of ballots')} labelSuffix=':' text={votes.length} />
+      <ResultsTable candidates={candidates} results={schulze} title={t('Results (Schulze method)')} />
       <Divider />
-      <ResultList candidates={candidates} result={schulze} label={t('Results (Schulze method)')} />
+      <LabledText label={t('Number of ballots')} labelSuffix=':' text={votes.length} />
       <Divider />
       <LabledText label={t('Quorum')} labelSuffix=':' text={quorum} />
       <Divider />
@@ -37,11 +37,11 @@ const ElectionsResults: FC<ElectionsResultsProps> = ({ candidates, results }) =>
         summary={<Typography>{t('Statistics')}</Typography>}
         details={
           <>
-            <ResultList candidates={candidates} result={firsts} label={t('First places top')} />
+            <ResultsTable candidates={candidates} results={firsts} title={t('First places top')} />
             <Divider />
-            <ResultList candidates={candidates} result={lasts} label={t('Last places top')} />
+            <ResultsTable candidates={candidates} results={lasts} title={t('Last places top')} />
             <Divider />
-            <ResultList candidates={candidates} result={top5} label={t('Entries in the top 5')} />
+            <ResultsTable candidates={candidates} results={top5} title={t('Entries in the top 5')} />
           </>
         }
       />
