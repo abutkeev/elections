@@ -50,7 +50,7 @@ const ResultsTable: FC<ResultsTableProps> = ({ title, results, candidates }) => 
           {places.map(({ places, names, result }, index) => {
             return (
               <TableRow key={index} hover>
-                <TableCell sx={{ textAlign: 'center' }}>{places.join(', ')}.</TableCell>
+                <TableCell sx={{ textAlign: 'center', textWrap: 'nowrap' }}>{places.join(', ')}.</TableCell>
                 <TableCell>{names.join(', ')}</TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>{result}</TableCell>
               </TableRow>
