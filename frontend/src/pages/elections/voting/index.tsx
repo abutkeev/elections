@@ -1,11 +1,12 @@
 import { CandidateDto, useElectionsGetQuery, useElectionsVoteMutation } from '@/api/api';
-import { Button, Divider, Stack, Toolbar } from '@mui/material';
+import { Button, Divider, Stack } from '@mui/material';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import VoteEntry from './VoteEntry';
 import { useTranslation } from 'react-i18next';
 import LabledText from '@/components/common/LabledText';
 import ProgressButton from '@/components/common/ProgressButton';
 import FlipMove from 'react-flip-move';
+import useMobile from '@/hooks/useMobile';
 
 interface VotingProps {
   electionsId: string;
@@ -14,6 +15,7 @@ interface VotingProps {
 }
 
 const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
+  const mobile = useMobile();
   const { t } = useTranslation();
   const [places, setPlaces] = useState<CandidateDto[]>([]);
   const [last, setLast] = useState<CandidateDto[]>([]);
@@ -100,14 +102,14 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
         </Stack>
       )}
       {modified && (
-        <Toolbar sx={{ gap: 1 }}>
-          <ProgressButton onClick={handleVote} refreshing={isFetching}>
+        <Stack direction={mobile ? 'column' : 'row'} spacing={1} m={2}>
+          <ProgressButton onClick={handleVote} refreshing={isFetching} fullWidth={mobile}>
             {vote ? t('Change your vote') : t('Vote')}
           </ProgressButton>
           <Button variant='outlined' onClick={init}>
             {t('Cancel')}
           </Button>
-        </Toolbar>
+        </Stack>
       )}
     </Stack>
   );
