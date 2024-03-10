@@ -9,7 +9,6 @@ import { promisify } from 'util';
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd(), '') };
-  console.log(exec('git rev-parse HEAD')?.stdout?.toArray());
   const REVISION = (await promisify(exec)('git rev-parse --short HEAD')).stdout.trim();
   const BRANCH = (await promisify(exec)('git rev-parse --abbrev-ref HEAD')).stdout.trim();
   const backendUrl = new URL(process.env.PROXY_TARGET || 'http://127.0.0.1:4000');
