@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren, ReactNode, useState } from 'react';
-import { ButtonProps, Button, Tooltip } from '@mui/material';
+import { ButtonProps, Button, Tooltip, Box } from '@mui/material';
 import useWaitRefreshing from '@/hooks/useWaitRefreshing';
 import ProgressContainer from './ProgressContainer';
 
@@ -14,6 +14,7 @@ export interface ProgressButtonProps extends Pick<ButtonProps, 'disabled' | 'var
   firstAction?(): void;
   finalAction?(): void;
   buttonProps?: Omit<ButtonProps, 'onClick' | 'children' | 'disabled' | 'variant'>;
+  fullWidth?: boolean;
 }
 
 const ProgressButton: FC<PropsWithChildren<ProgressButtonProps>> = ({
@@ -30,6 +31,7 @@ const ProgressButton: FC<PropsWithChildren<ProgressButtonProps>> = ({
   firstAction,
   finalAction,
   buttonProps,
+  fullWidth,
 }) => {
   const [processing, setProcessing] = useState(false);
   const setWaitRefreshing = useWaitRefreshing(refreshing, () => {
@@ -58,17 +60,19 @@ const ProgressButton: FC<PropsWithChildren<ProgressButtonProps>> = ({
 
   return (
     <Tooltip title={tooltip}>
-      <div>
+      <Box width={fullWidth ? '100%' : undefined}>
         <ProgressContainer
           inProgress={inProgress || processing}
           progressColor={progressColor}
           progressSize={progressSize}
+          boxProps={{ sx: [!!fullWidth && { display: 'block' }] }}
         >
           <Button
             {...buttonProps}
             sx={[
               ...(Array.isArray(ButtonSx) ? ButtonSx : [ButtonSx]),
               iconButton && { minWidth: 0, p: 1, borderRadius: '50%' },
+              fullWidth && { width: '100%' },
             ]}
             disabled={disabled || inProgress || processing}
             variant={iconButton ? 'text' : variant}
@@ -77,7 +81,7 @@ const ProgressButton: FC<PropsWithChildren<ProgressButtonProps>> = ({
             {children}
           </Button>
         </ProgressContainer>
-      </div>
+      </Box>
     </Tooltip>
   );
 };
