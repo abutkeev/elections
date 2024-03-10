@@ -32,8 +32,8 @@ const ElectionsResults: FC<ElectionsResultsProps> = ({ candidates, results }) =>
       <LabledText label={t('Number of ballots')} labelSuffix=':' text={votes.length} />
       <Divider />
       <LabledText label={t('Quorum')} labelSuffix=':' text={quorum} />
-      <Divider />
       <CustomAccordion
+        accordionProps={{ sx: { m: 1 } }}
         summary={<Typography>{t('Statistics')}</Typography>}
         details={
           <>
