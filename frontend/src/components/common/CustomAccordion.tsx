@@ -1,5 +1,13 @@
 import { FC, ReactNode, useState } from 'react';
-import { Accordion, AccordionActions, AccordionDetails, AccordionSummary, Button, Stack } from '@mui/material';
+import {
+  Accordion,
+  AccordionActions,
+  AccordionDetails,
+  AccordionProps,
+  AccordionSummary,
+  Button,
+  Stack,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { ExpandMore } from '@mui/icons-material';
 import ProgressButton from './ProgressButton';
@@ -11,6 +19,7 @@ interface CustomAccordionProps {
   valid?: boolean;
   handleCancel?(): void;
   handleUpdate?(): void | Promise<void>;
+  accordionProps?: Omit<AccordionProps, 'children'>;
 }
 
 const CustomAccordion: FC<CustomAccordionProps> = ({
@@ -20,20 +29,32 @@ const CustomAccordion: FC<CustomAccordionProps> = ({
   valid = false,
   handleCancel,
   handleUpdate,
+  accordionProps,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const { t } = useTranslation();
 
+  const handleAccordionChange: AccordionProps['onChange'] = (e, v) => {
+    if (accordionProps?.onChange) {
+      accordionProps.onChange(e, v);
+    }
+    setExpanded(v || modified);
+  };
+
+  const sx = accordionProps?.sx;
+
   return (
     <Accordion
-      expanded={expanded || modified}
-      onChange={(_, v) => setExpanded(v || modified)}
+      {...accordionProps}
+      expanded={expanded || modified || !!accordionProps?.expanded}
+      onChange={handleAccordionChange}
       sx={[
         modified && {
           '& .MuiAccordionSummary-root:hover, .MuiButtonBase-root:hover': {
             cursor: 'default',
           },
         },
+        ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     >
       <AccordionSummary expandIcon={<ExpandMore sx={{ visibility: modified ? 'collapse' : 'visible' }} />}>
