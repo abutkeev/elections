@@ -1,6 +1,6 @@
 import { CandidateDto, useElectionsGetQuery, useElectionsVoteMutation } from '@/api/api';
-import { Divider, Stack, Toolbar } from '@mui/material';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { Button, Divider, Stack, Toolbar } from '@mui/material';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import VoteEntry from './VoteEntry';
 import { useTranslation } from 'react-i18next';
 import LabledText from '@/components/common/LabledText';
@@ -28,7 +28,7 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
     return JSON.stringify(vote) !== JSON.stringify(places.map(({ user_id }) => user_id));
   }, [vote, places]);
 
-  useEffect(() => {
+  const init = useCallback(() => {
     const places: CandidateDto[] = [];
     for (const id of vote || []) {
       const candidate = candidates.find(({ user_id }) => user_id === id);
@@ -42,6 +42,8 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
         : candidates.slice().sort(() => Math.random() - 0.5)
     );
   }, [vote, candidates]);
+
+  useEffect(() => init(), [init]);
 
   const getSwapHandler = (index1: number, index2: number) => () => {
     const newPlaces = places.slice();
@@ -98,10 +100,13 @@ const Voting: FC<VotingProps> = ({ electionsId, vote, candidates }) => {
         </Stack>
       )}
       {modified && (
-        <Toolbar>
+        <Toolbar sx={{ gap: 1 }}>
           <ProgressButton onClick={handleVote} refreshing={isFetching}>
             {vote ? t('Change your vote') : t('Vote')}
           </ProgressButton>
+          <Button variant='outlined' onClick={init}>
+            {t('Cancel')}
+          </Button>
         </Toolbar>
       )}
     </Stack>
